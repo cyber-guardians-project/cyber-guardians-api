@@ -1,8 +1,12 @@
+import uvicorn
+
 from fastapi import FastAPI
+from api.controllers.auth_controller import auth_router
 
-app = FastAPI()
+api = FastAPI()
+
+api.include_router(auth_router, prefix='/auth', tags=['Auth'])
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+if __name__ == '__main__':
+    uvicorn.run(api, host="0.0.0.0", port=8000)
