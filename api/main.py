@@ -1,13 +1,13 @@
-import uvicorn
-
 from fastapi import FastAPI
+from fastapi import HTTPException
+
 from api.controllers.auth_controller import auth_router
-from api.config.database import database
+from api.config.settings import settings
+from api.utils.error_handler import http_exception_handler
 
 
-api = FastAPI()
+api = FastAPI(title=settings.app_name)
+
+api.add_exception_handler(HTTPException, http_exception_handler)
 
 api.include_router(auth_router, prefix='/auth', tags=['Auth'])
-
-if __name__ == '__main__':
-    uvicorn.run(api, host="0.0.0.0", port=8000)
