@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
 
-class SignUpRequestDto(BaseModel):
+class SignInRequestDto(BaseModel):
     email: EmailStr
     password: str

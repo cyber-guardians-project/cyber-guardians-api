@@ -1,9 +1,15 @@
 import jwt
 from api.config.settings import settings
+from api.models.user import User
+from datetime import datetime
 
 
-def create_access_token(user_id: int) -> str:
-    to_encode = user_id.copy()
+def create_access_token(user: User) -> str:
+    to_encode = user.model_dump().copy()
+
+    for key, value in to_encode.items():
+        if isinstance(value, datetime):
+            to_encode[key] = value.isoformat()
 
     encoded_jwt = jwt.encode(
         to_encode, settings.secret_key, algorithm=settings.jwt_algorithm)

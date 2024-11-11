@@ -9,6 +9,6 @@ async def http_exception_handler(request: Request, exc: HTTPException):
             status="error",
             message=exc.detail,
             data=None
-        ).dict(),
+        ).model_dump(exclude_none=True),
         status_code=exc.status_code
     )

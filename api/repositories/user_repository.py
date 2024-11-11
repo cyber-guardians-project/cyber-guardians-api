@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 from api.config.database import database
 from api.dtos.requests.sign_up_request_dto import SignUpRequestDto
@@ -13,3 +13,12 @@ class UserRepository:
         user_document["id"] = str(created_user.inserted_id)
 
         return user_document
+
+    async def get_user_by_email(user_email: str) -> Optional[User]:
+        user_document = await database.users.find_one({"email": user_email})
+
+        if user_document:
+            user_document["_id"] = str(user_document["_id"])
+            return User(**user_document)
+
+        return None
