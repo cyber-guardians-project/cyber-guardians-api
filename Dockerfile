@@ -11,6 +11,6 @@ RUN poetry config virtualenvs.create false \
 
 COPY . /api
 
-EXPOSE 8000
+EXPOSE 80
 
-CMD ["fastapi", "run", "./api/main.py"]
+CMD ["fastapi", "run", "./api/main.py", "--port", "80", "--host", "0.0.0.0"]
