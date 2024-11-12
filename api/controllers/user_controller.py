@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 
 from api.dtos.responses.get_current_user_response_dto import GetCurrentUserResponseDto
 from api.dtos.responses.standard_response_dto import StandardResponseDto
-from api.utils.jwt_handler import verify_access_token, get_current_user
+from api.utils.jwt_handler import get_current_user
 
 
 users_router = APIRouter()

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from api.dtos.requests.sign_up_request_dto import SignUpRequestDto
 from api.dtos.responses.sign_up_response_dto import SignUpResponseDto
 from api.models.user import User
@@ -15,7 +15,7 @@ class UserService:
 
         if existing_user:
             raise HTTPException(
-                status_code=409, detail="User with this email already exists.")
+                status_code=status.HTTP_409_CONFLICT, detail="User with this email already exists.")
 
         created_user = await user_repository.add_user(user_data)
 
