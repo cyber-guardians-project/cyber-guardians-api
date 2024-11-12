@@ -1,7 +1,12 @@
+from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
+
 import jwt
 from api.config.settings import settings
 from api.models.user import User
 from datetime import datetime
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def create_access_token(user: User) -> str:
@@ -26,3 +31,9 @@ def verify_access_token(token: str) -> int:
         raise Exception("Token has expired")
     except jwt.InvalidTokenError:
         raise Exception("Invalid token")
+
+
+def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
+    payload = verify_access_token(token)
+
+    return payload
