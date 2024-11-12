@@ -6,5 +6,4 @@ class SignUpResponseDto(BaseModel):
     id: str
     user_name: str
     email: EmailStr
-    password: str
     birth_date: datetime
