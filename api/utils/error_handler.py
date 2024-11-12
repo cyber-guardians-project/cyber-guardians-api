@@ -13,3 +13,17 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         ).model_dump(exclude_none=True),
         status_code=exc.status_code
     )
+
+
+async def general_exception_handler(request: Request, exc: Exception):
+    error_message = str(exc) if str(exc) else "Internal server error"
+
+    return JSONResponse(
+        content=StandardResponseDto(
+            status_code=500,
+            status="error",
+            message=error_message,
+            data=None
+        ).model_dump(exclude_none=True),
+        status_code=500
+    )
