@@ -1,12 +1,12 @@
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer
 
 import jwt
 from api.config.settings import settings
 from api.models.user import User
 from datetime import datetime
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = HTTPBearer()
 
 
 def create_access_token(user: User) -> str:
@@ -28,12 +28,13 @@ def verify_access_token(token: str) -> int:
                              algorithms=[settings.jwt_algorithm])
         return payload
     except jwt.ExpiredSignatureError:
-        raise Exception("Token has expired")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token has expired")
     except jwt.InvalidTokenError:
-        raise Exception("Invalid token")
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")
 
 
-def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
+def get_session_user(authorization: str = Depends(oauth2_scheme)) -> dict:
+    token = authorization.credentials
     payload = verify_access_token(token)
 
     return payload
