@@ -8,6 +8,6 @@ services:
       - .:/api  
     ports:
       - "8000:8000" 
-    environment:
-      - DATABASE_URL=your_database_url
-      - SECRET_KEY=your_secret_key
+    env_file:
+      - .env
+      

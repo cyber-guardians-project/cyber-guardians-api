@@ -12,7 +12,7 @@ env
 .idea
 .vscode
 *.log
-*.env
+#*.env
 
 # Ignore git and version control folders
 .git
