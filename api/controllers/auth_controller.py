@@ -16,13 +16,17 @@ user_service = UserService()
 async def sign_up(user_data: SignUpRequestDto) -> StandardResponseDto[SignUpResponseDto]:
     response = await user_service.add_user(user_data)
 
-    return StandardResponseDto(status_code=status.HTTP_200_OK, status='success',
-                               message='User signed up successfully', data=response)
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message='User signed up successfully',
+                               data=response)
 
 
 @auth_router.post('/sign-in')
 async def sign_in(user_credentials: SignInRequestDto):
     response = await auth_service.sign_in(user_credentials)
 
-    return StandardResponseDto(status_code=status.HTTP_200_OK, status='success',
-                               message='User signed in successfully', data=response)
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message='User signed in successfully',
+                               data=response)

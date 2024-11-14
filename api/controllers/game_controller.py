@@ -19,5 +19,7 @@ async def add_game(game_data: AddGameRequestDto,
                    Depends(get_session_user)) -> StandardResponseDto[AddGameResponseDto]:
     response = await game_service.add_game(game_data, current_user['id'])
 
-    return StandardResponseDto(status_code=status.HTTP_200_OK, status='success',
-                               message='Game created', data=response)
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message='Game created',
+                               data=response)
