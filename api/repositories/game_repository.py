@@ -6,7 +6,7 @@ from api.models.game import Game
 
 
 class GameRepository:
-    async def add_game(game_data: AddGameRequestDto, user_id: int) -> AddGameResponseDto:
+    async def add_game(self, game_data: AddGameRequestDto, user_id: int) -> AddGameResponseDto:
         game_document: dict[str, Any] = game_data.model_dump()
         game_document['user_id'] = user_id
 

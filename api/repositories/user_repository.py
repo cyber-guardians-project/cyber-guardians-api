@@ -7,14 +7,14 @@ from api.models.user import User
 
 
 class UserRepository:
-    async def add_user(user_data: SignUpRequestDto) -> SignUpResponseDto:
+    async def add_user(self, user_data: SignUpRequestDto) -> SignUpResponseDto:
         user_document: dict[str, Any] = user_data.model_dump()
         created_user: User = await database.users.insert_one(user_document)
         user_document["id"] = str(created_user.inserted_id)
 
         return user_document
 
-    async def get_user_by_email(user_email: str) -> Optional[User]:
+    async def get_user_by_email(self, user_email: str) -> Optional[User]:
         user_document = await database.users.find_one({"email": user_email})
 
         if user_document:

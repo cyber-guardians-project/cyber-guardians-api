@@ -3,11 +3,13 @@ from fastapi import APIRouter, status
 from api.dtos.requests.sign_in_request_dto import SignInRequestDto
 from api.dtos.responses.sign_up_response_dto import SignUpResponseDto
 from api.dtos.responses.standard_response_dto import StandardResponseDto
-from api.services.auth_service import AuthService as auth_service
-from api.services.user_service import UserService as user_service
+from api.services.auth_service import AuthService
+from api.services.user_service import UserService
 from api.dtos.requests.sign_up_request_dto import SignUpRequestDto
 
 auth_router = APIRouter()
+auth_service = AuthService()
+user_service = UserService()
 
 
 @auth_router.post('/sign-up')
