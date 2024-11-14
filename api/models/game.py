@@ -6,7 +6,7 @@ from typing import Optional
 class Game(BaseModel):
     id: str = Field(alias="_id")
     user_id: str
-    score: int = Field(default_factory=0),
+    score: int = Field(default_factory=0)
     character_variation: int
     current_level: int
     levels: dict

@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class AddGameResponseDto(BaseModel):
@@ -9,3 +10,4 @@ class AddGameResponseDto(BaseModel):
     character_variation: int
     current_level: int
     levels: Optional[dict]
+    created_at: datetime

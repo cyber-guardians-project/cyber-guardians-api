@@ -4,11 +4,14 @@ from api.config.database import database
 from api.dtos.requests.sign_up_request_dto import SignUpRequestDto
 from api.dtos.responses.sign_up_response_dto import SignUpResponseDto
 from api.models.user import User
+from datetime import datetime, timezone
 
 
 class UserRepository:
     async def add_user(self, user_data: SignUpRequestDto) -> SignUpResponseDto:
         user_document: dict[str, Any] = user_data.model_dump()
+        user_document['created_at'] = datetime.now(timezone.utc)
+
         created_user: User = await database.users.insert_one(user_document)
         user_document["id"] = str(created_user.inserted_id)
 

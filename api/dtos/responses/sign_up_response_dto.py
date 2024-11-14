@@ -7,3 +7,4 @@ class SignUpResponseDto(BaseModel):
     user_name: str
     email: EmailStr
     birth_date: datetime
+    created_at: datetime
