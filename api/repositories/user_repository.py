@@ -2,9 +2,11 @@ from typing import Any, Optional
 
 from api.config.database import database
 from api.dtos.requests.sign_up_request_dto import SignUpRequestDto
+from api.dtos.requests.update_user_request_dto import UpdateUserRequestDto
 from api.dtos.responses.sign_up_response_dto import SignUpResponseDto
 from api.models.user import User
 from datetime import datetime, timezone
+from bson import ObjectId
 
 
 class UserRepository:
@@ -25,3 +27,8 @@ class UserRepository:
             return User(**user_document)
 
         return None
+
+    async def update_user(self, user_id: str, user_data: UpdateUserRequestDto) -> User:
+        object_id = ObjectId(user_id)
+
+        return await database.users.update_one({"_id": object_id}, [{"$set": user_data}])
