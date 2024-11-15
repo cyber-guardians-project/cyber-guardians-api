@@ -22,8 +22,7 @@ def get_current_user(current_user: GetCurrentUserResponseDto
 
 @users_router.put('')
 async def update_user(user_data: UpdateUserRequestDto, current_user: GetCurrentUserResponseDto
-                      = Depends(get_session_user)):
-
+                      = Depends(get_session_user)) -> StandardResponseDto[GetCurrentUserResponseDto]:
     response = await user_service.update_user(current_user, user_data)
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
