@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status
 
 
 from api.dtos.requests.add_game_request_dto import AddGameRequestDto
+from api.dtos.requests.update_game_request_dto import UpdateGameRequestDto
 from api.dtos.responses.add_game_response_dto import AddGameResponseDto
 from api.dtos.responses.get_current_user_response_dto import GetCurrentUserResponseDto
 from api.dtos.responses.get_games_response_dto import GetGamesResponseDto
@@ -30,7 +31,17 @@ async def add_game(game_data: AddGameRequestDto,
                    Depends(get_session_user)) -> StandardResponseDto[AddGameResponseDto]:
     response = await game_service.add_game(game_data, current_user['id'])
 
-    return StandardResponseDto(status_code=status.HTTP_200_OK,
+    return StandardResponseDto(status_code=status.HTTP_201_CREATED,
                                status='success',
                                message='Game created',
                                data=response)
+
+
+@games_router.put('/{game_id}')
+async def update_game(game_id: str, game_data: UpdateGameRequestDto, current_user: GetCurrentUserResponseDto =
+                      Depends(get_session_user)) -> StandardResponseDto[None]:
+    await game_service.update_game(game_id, game_data, current_user['id'])
+
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message='Game updated')

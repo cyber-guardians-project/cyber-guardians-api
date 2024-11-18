@@ -1,4 +1,6 @@
+from fastapi import HTTPException, status
 from api.dtos.requests.add_game_request_dto import AddGameRequestDto
+from api.dtos.requests.update_game_request_dto import UpdateGameRequestDto
 from api.dtos.responses.add_game_response_dto import AddGameResponseDto
 from api.dtos.responses.get_games_response_dto import GetGamesResponseDto
 from api.repositories.game_repository import GameRepository
@@ -14,3 +16,18 @@ class GameService:
         created_game = await game_repository.add_game(game_data, user_id)
 
         return AddGameResponseDto(**created_game)
+
+    async def update_game(self, game_id: str, game_data: UpdateGameRequestDto, user_id: str) -> None:
+        existing_game = await game_repository.get_game(game_id, user_id)
+
+        if not existing_game:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Game does not exists")
+
+        update_data = game_data.model_dump(exclude_unset=True)
+
+        update = await game_repository.update_game(game_id, update_data)
+
+        if update.modified_count > 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Error updating game")

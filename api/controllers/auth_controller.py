@@ -16,7 +16,7 @@ user_service = UserService()
 async def sign_up(user_data: SignUpRequestDto) -> StandardResponseDto[SignUpResponseDto]:
     response = await user_service.add_user(user_data)
 
-    return StandardResponseDto(status_code=status.HTTP_200_OK,
+    return StandardResponseDto(status_code=status.HTTP_201_CREATED,
                                status='success',
                                message='User signed up successfully',
                                data=response)
