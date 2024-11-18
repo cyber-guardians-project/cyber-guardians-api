@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, status
 
-
 from api.dtos.requests.add_game_request_dto import AddGameRequestDto
 from api.dtos.requests.update_game_request_dto import UpdateGameRequestDto
 from api.dtos.responses.add_game_response_dto import AddGameResponseDto
 from api.dtos.responses.get_current_user_response_dto import GetCurrentUserResponseDto
-from api.dtos.responses.get_games_response_dto import GetGamesResponseDto
+from api.dtos.responses.get_game_response_dto import GetGameResponseDto
 from api.dtos.responses.standard_response_dto import StandardResponseDto
 from api.services.game_service import GameService
 from api.utils.jwt_handler import get_session_user
@@ -16,12 +15,22 @@ game_service = GameService()
 
 
 @games_router.get('', summary='Obtener partidas del jugador')
-async def get_games(current_user: GetCurrentUserResponseDto = Depends(get_session_user)) -> StandardResponseDto[list[GetGamesResponseDto]]:
+async def get_games(current_user: GetCurrentUserResponseDto = Depends(get_session_user)) -> StandardResponseDto[list[GetGameResponseDto]]:
     response = await game_service.get_games(current_user['id'])
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='Game created',
+                               message='Partidas obtenidas',
+                               data=response)
+
+
+@games_router.get('/{game_id}', summary='Obtener partida')
+async def get_games(game_id: str, current_user: GetCurrentUserResponseDto = Depends(get_session_user)) -> StandardResponseDto[GetGameResponseDto]:
+    response = await game_service.get_game(game_id, current_user['id'])
+
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message='Partida obtenida',
                                data=response)
 
 
@@ -33,7 +42,7 @@ async def add_game(game_data: AddGameRequestDto,
 
     return StandardResponseDto(status_code=status.HTTP_201_CREATED,
                                status='success',
-                               message='Game created',
+                               message='Partida creada',
                                data=response)
 
 
@@ -44,7 +53,7 @@ async def update_game(game_id: str, game_data: UpdateGameRequestDto, current_use
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='Game updated')
+                               message='Partida actualizada')
 
 
 @games_router.delete('/{game_id}', summary='Eliminar partida')
@@ -54,4 +63,4 @@ async def delete_game(game_id: str, current_user: GetCurrentUserResponseDto =
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='Game deleted')
+                               message='Partida eliminada')

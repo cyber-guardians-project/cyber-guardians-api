@@ -12,23 +12,24 @@ user_service = UserService()
 
 
 @users_router.get('/me', summary='Obtener datos del usuario en sesión')
-def get_current_user(current_user: GetCurrentUserResponseDto
-                     = Depends(get_session_user)) -> StandardResponseDto[GetCurrentUserResponseDto]:
+async def get_current_user(current_user: GetCurrentUserResponseDto
+                           = Depends(get_session_user)) -> StandardResponseDto[GetCurrentUserResponseDto]:
+    response = await user_service.get_user_by_id(current_user['id'])
+
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='Current user',
-                               data=current_user)
+                               message='Usuario autenticado',
+                               data=response)
 
 
 @users_router.put('', summary='Actualizar usuario')
 async def update_user(user_data: UpdateUserRequestDto, current_user: GetCurrentUserResponseDto
                       = Depends(get_session_user)) -> StandardResponseDto[GetCurrentUserResponseDto]:
-    response = await user_service.update_user(current_user, user_data)
+    await user_service.update_user(current_user, user_data)
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='User updated',
-                               data=response)
+                               message='Usuario actualizado')
 
 
 @users_router.delete('/{email}', summary='Eliminar usuario')
@@ -37,4 +38,4 @@ async def delete_user(email: str) -> StandardResponseDto:
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message=f'User with email {email} deleted successfully')
+                               message=f'Usuario {email} eliminado')

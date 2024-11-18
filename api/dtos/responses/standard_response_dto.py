@@ -9,3 +9,7 @@ class StandardResponseDto(BaseModel, Generic[T]):
     status: str
     message: Optional[str] = None
     data: Optional[T] = None
+
+    class Config:
+        # Exclude fields with None values from the serialized output
+        exclude_none = True

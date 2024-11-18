@@ -18,8 +18,7 @@ async def sign_up(user_data: SignUpRequestDto) -> StandardResponseDto[SignUpResp
 
     return StandardResponseDto(status_code=status.HTTP_201_CREATED,
                                status='success',
-                               message=f'Usuario {
-                                   response.email} registrado exitosamente',
+                               message=f'Usuario registrado exitosamente',
                                data=response)
 
 
@@ -29,5 +28,5 @@ async def sign_in(user_credentials: SignInRequestDto):
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='User signed in successfully',
+                               message='Usuario autenticado',
                                data=response)

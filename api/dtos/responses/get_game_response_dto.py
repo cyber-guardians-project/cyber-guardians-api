@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
-class GetGamesResponseDto(BaseModel):
+class GetGameResponseDto(BaseModel):
     id: str
     user_id: str
     score: int

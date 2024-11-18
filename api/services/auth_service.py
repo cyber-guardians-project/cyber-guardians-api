@@ -15,7 +15,7 @@ class AuthService:
 
         if not user or not verify_password(user_credentials.password, user.password):
             raise HTTPException(status.HTTP_401_UNAUTHORIZED,
-                                "Invalid email or password")
+                                "Correo electrónico o contraseña incorrectos")
 
         return {'auth_token': create_access_token(user)}
 

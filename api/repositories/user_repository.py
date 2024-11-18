@@ -29,12 +29,23 @@ class UserRepository:
 
         return None
 
+    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+        object_id = ObjectId(user_id)
+        user_document = await database.users.find_one({"_id": object_id})
+
+        if user_document:
+            user_document["_id"] = str(user_document["_id"])
+            return User(**user_document)
+
+        return None
+
     async def delete_user_by_email(self, user_email: str) -> bool:
         result = await database.users.delete_one({"email": user_email})
         return result.deleted_count > 0
 
     async def update_user(self, user_id: str, user_data: UpdateUserRequestDto) -> User:
         object_id = ObjectId(user_id)
+        user_data['updated_at'] = datetime.now(timezone.utc)
         result = await database.users.update_one({"_id": object_id}, [{"$set": user_data}])
 
         return result.modified_count > 0

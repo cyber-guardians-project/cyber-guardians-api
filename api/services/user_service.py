@@ -28,12 +28,15 @@ class UserService:
     async def get_user_by_email(self, user_email: str) -> Optional[User]:
         return await user_repository.get_user_by_email(user_email)
 
+    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+        return await user_repository.get_user_by_id(user_id)
+
     async def update_user(self, user: GetCurrentUserResponseDto, user_data: UpdateUserRequestDto) -> User:
         existing_user = await user_repository.get_user_by_email(user['email'])
 
         if not existing_user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+                status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
 
         update_data = user_data.model_dump(exclude_unset=True)
 
@@ -45,7 +48,7 @@ class UserService:
             if email_in_use and email_in_use.id != user['id']:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
-                    detail="Email is already in use by another user.",
+                    detail="El correo electrónico se encuentra en uso",
                 )
 
         updated = await user_repository.update_user(user['id'], update_data)
@@ -53,7 +56,7 @@ class UserService:
         if not updated:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Error updating user",
+                detail="Se produjo un error al actualizar el usuario",
             )
 
     async def delete_user_by_email(self, email: str):
@@ -61,10 +64,10 @@ class UserService:
 
         if not existing_user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+                status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
 
         deleted = await user_repository.delete_user_by_email(email)
 
         if not deleted:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Error deleting user")
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Se produjo un error al eliminar el usuario")
