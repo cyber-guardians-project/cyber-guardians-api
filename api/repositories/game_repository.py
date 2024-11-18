@@ -46,6 +46,6 @@ class GameRepository:
 
     async def delete_game(self, game_id: str) -> bool:
         object_id = ObjectId(game_id)
-        result = await database.users.delete_one({"_id": object_id})
+        result = await database.games.delete_one({"_id": object_id})
 
         return result.deleted_count > 0

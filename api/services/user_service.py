@@ -19,7 +19,7 @@ class UserService:
 
         if existing_user:
             raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT, detail="User with this email already exists.")
+                status_code=status.HTTP_409_CONFLICT, detail=f"Usuario {user_data.email} ya existe")
 
         created_user = await user_repository.add_user(user_data)
 

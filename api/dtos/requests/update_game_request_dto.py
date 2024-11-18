@@ -1,9 +1,9 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class UpdateGameRequestDto(BaseModel):
-    score: Optional[int]
-    character_variation: Optional[int]
-    current_level: Optional[int]
-    levels: Optional[dict]
+    score: Optional[int] = Field(default=None)
+    character_variation: Optional[int] = Field(default=None)
+    current_level: Optional[int] = Field(default=None)
+    levels: Optional[dict] = Field(default=None)

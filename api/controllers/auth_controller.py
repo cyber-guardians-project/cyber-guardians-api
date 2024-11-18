@@ -18,7 +18,8 @@ async def sign_up(user_data: SignUpRequestDto) -> StandardResponseDto[SignUpResp
 
     return StandardResponseDto(status_code=status.HTTP_201_CREATED,
                                status='success',
-                               message='User signed up successfully',
+                               message=f'Usuario {
+                                   response.email} registrado exitosamente',
                                data=response)
 
 
