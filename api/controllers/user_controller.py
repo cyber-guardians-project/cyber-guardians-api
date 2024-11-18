@@ -11,7 +11,7 @@ users_router = APIRouter()
 user_service = UserService()
 
 
-@users_router.get('/me')
+@users_router.get('/me', summary='Obtener datos del usuario en sesión')
 def get_current_user(current_user: GetCurrentUserResponseDto
                      = Depends(get_session_user)) -> StandardResponseDto[GetCurrentUserResponseDto]:
     return StandardResponseDto(status_code=status.HTTP_200_OK,
@@ -20,7 +20,7 @@ def get_current_user(current_user: GetCurrentUserResponseDto
                                data=current_user)
 
 
-@users_router.put('')
+@users_router.put('', summary='Actualizar usuario')
 async def update_user(user_data: UpdateUserRequestDto, current_user: GetCurrentUserResponseDto
                       = Depends(get_session_user)) -> StandardResponseDto[GetCurrentUserResponseDto]:
     response = await user_service.update_user(current_user, user_data)
@@ -31,7 +31,7 @@ async def update_user(user_data: UpdateUserRequestDto, current_user: GetCurrentU
                                data=response)
 
 
-@users_router.delete('/{email}', response_model=StandardResponseDto)
+@users_router.delete('/{email}', summary='Eliminar usuario')
 async def delete_user(email: str) -> StandardResponseDto:
     await user_service.delete_user_by_email(email)
 

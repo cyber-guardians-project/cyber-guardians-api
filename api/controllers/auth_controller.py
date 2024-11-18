@@ -12,7 +12,7 @@ auth_service = AuthService()
 user_service = UserService()
 
 
-@auth_router.post('/sign-up')
+@auth_router.post('/sign-up', summary="Registro de usuarios")
 async def sign_up(user_data: SignUpRequestDto) -> StandardResponseDto[SignUpResponseDto]:
     response = await user_service.add_user(user_data)
 
@@ -23,7 +23,7 @@ async def sign_up(user_data: SignUpRequestDto) -> StandardResponseDto[SignUpResp
                                data=response)
 
 
-@auth_router.post('/sign-in')
+@auth_router.post('/sign-in', summary='Inicio de sesión')
 async def sign_in(user_credentials: SignInRequestDto):
     response = await auth_service.sign_in(user_credentials)
 
