@@ -38,7 +38,14 @@ class GameRepository:
 
         return game_document
 
-    async def update_game(self, game_id, game_data: UpdateGameRequestDto) -> None:
+    async def update_game(self, game_id, game_data: UpdateGameRequestDto) -> bool:
         object_id = ObjectId(game_id)
+        result = await database.games.update_one({"_id": object_id}, [{"$set": game_data}])
 
-        return await database.games.update_one({"_id": object_id}, [{"$set": game_data}])
+        return result.modified_count > 0
+
+    async def delete_game(self, game_id: str) -> bool:
+        object_id = ObjectId(game_id)
+        result = await database.users.delete_one({"_id": object_id})
+
+        return result.deleted_count > 0

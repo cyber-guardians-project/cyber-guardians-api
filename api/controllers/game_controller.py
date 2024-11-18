@@ -45,3 +45,13 @@ async def update_game(game_id: str, game_data: UpdateGameRequestDto, current_use
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
                                message='Game updated')
+
+
+@games_router.delete('/{game_id}')
+async def delete_game(game_id: str, current_user: GetCurrentUserResponseDto =
+                      Depends(get_session_user)) -> StandardResponseDto[None]:
+    await game_service.delete_game(game_id, current_user['id'])
+
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message='Game deleted')

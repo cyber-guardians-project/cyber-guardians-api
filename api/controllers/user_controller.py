@@ -29,3 +29,12 @@ async def update_user(user_data: UpdateUserRequestDto, current_user: GetCurrentU
                                status='success',
                                message='User updated',
                                data=response)
+
+
+@users_router.delete('/{email}', response_model=StandardResponseDto)
+async def delete_user(email: str) -> StandardResponseDto:
+    await user_service.delete_user_by_email(email)
+
+    return StandardResponseDto(status_code=status.HTTP_200_OK,
+                               status='success',
+                               message=f'User with email {email} deleted successfully')

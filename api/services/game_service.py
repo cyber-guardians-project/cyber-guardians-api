@@ -26,8 +26,21 @@ class GameService:
 
         update_data = game_data.model_dump(exclude_unset=True)
 
-        update = await game_repository.update_game(game_id, update_data)
+        updated = await game_repository.update_game(game_id, update_data)
 
-        if update.modified_count > 0:
+        if not updated:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Error updating game")
+
+    async def delete_game(self, game_id: str, user_id: str) -> None:
+        existing_game = await game_repository.get_game(game_id, user_id)
+
+        if not existing_game:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Game does not exists")
+
+        deleted = await game_repository.delete_game(game_id)
+
+        if not deleted:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Error deleting game")

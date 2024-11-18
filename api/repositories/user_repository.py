@@ -35,5 +35,6 @@ class UserRepository:
 
     async def update_user(self, user_id: str, user_data: UpdateUserRequestDto) -> User:
         object_id = ObjectId(user_id)
+        result = await database.users.update_one({"_id": object_id}, [{"$set": user_data}])
 
-        return await database.users.update_one({"_id": object_id}, [{"$set": user_data}])
+        return result.modified_count > 0

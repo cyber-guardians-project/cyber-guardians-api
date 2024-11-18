@@ -48,12 +48,23 @@ class UserService:
                     detail="Email is already in use by another user.",
                 )
 
-        update = await user_repository.update_user(user['id'], update_data)
+        updated = await user_repository.update_user(user['id'], update_data)
 
-        if update.modified_count == 0:
+        if not updated:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Error updating user",
             )
 
-        return await user_repository.get_user_by_email(user["email"])
+    async def delete_user_by_email(self, email: str):
+        existing_user = await self.get_user_by_email(email)
+
+        if not existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+
+        deleted = await user_repository.delete_user_by_email(email)
+
+        if not deleted:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Error deleting user")
