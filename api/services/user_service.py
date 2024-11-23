@@ -14,16 +14,18 @@ user_repository = UserRepository()
 
 class UserService:
     async def add_user(self, user_data: SignUpRequestDto) -> SignUpResponseDto:
-        user_data.password = hash_password(user_data.password)
-        existing_user = await user_repository.get_user_by_email(user_data.email)
+        user_data_copy = user_data.model_copy()
+
+        user_data_copy.password = hash_password(user_data_copy.password)
+        existing_user = await user_repository.get_user_by_email(user_data_copy.email)
 
         if existing_user:
             raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT, detail=f"Usuario {user_data.email} ya existe")
+                status_code=status.HTTP_409_CONFLICT, detail=f"Usuario {user_data_copy.email} ya existe")
 
-        created_user = await user_repository.add_user(user_data)
+        created_user = await user_repository.add_user(user_data_copy)
 
-        return SignUpResponseDto(**created_user)
+        return {'user': created_user}
 
     async def get_user_by_email(self, user_email: str) -> Optional[User]:
         return await user_repository.get_user_by_email(user_email)

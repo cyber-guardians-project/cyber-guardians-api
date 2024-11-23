@@ -1,10 +1,9 @@
-from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from typing import Optional
+from pydantic import BaseModel, Field
+
+from api.dtos.responses.get_current_user_response_dto import GetCurrentUserResponseDto
 
 
 class SignUpResponseDto(BaseModel):
-    id: str
-    user_name: str
-    email: EmailStr
-    birth_date: datetime
-    created_at: datetime
+    auth_token: Optional[str] = Field(default=None)
+    user: GetCurrentUserResponseDto
