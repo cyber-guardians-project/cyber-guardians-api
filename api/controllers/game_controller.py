@@ -25,7 +25,7 @@ async def get_games(current_user: GetCurrentUserResponseDto = Depends(get_sessio
 
 
 @games_router.get('/{game_id}', summary='Obtener partida')
-async def get_games(game_id: str, current_user: GetCurrentUserResponseDto = Depends(get_session_user)) -> StandardResponseDto[GetGameResponseDto]:
+async def get_game(game_id: str, current_user: GetCurrentUserResponseDto = Depends(get_session_user)) -> StandardResponseDto[GetGameResponseDto]:
     response = await game_service.get_game(game_id, current_user['id'])
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
@@ -48,12 +48,15 @@ async def add_game(game_data: AddGameRequestDto,
 
 @games_router.put('/{game_id}', summary='Actualizar partida')
 async def update_game(game_id: str, game_data: UpdateGameRequestDto, current_user: GetCurrentUserResponseDto =
-                      Depends(get_session_user)) -> StandardResponseDto[None]:
+                      Depends(get_session_user)) -> StandardResponseDto[GetGameResponseDto]:
     await game_service.update_game(game_id, game_data, current_user['id'])
+
+    response = await game_service.get_game(game_id, current_user['id'])
 
     return StandardResponseDto(status_code=status.HTTP_200_OK,
                                status='success',
-                               message='Partida actualizada')
+                               message='Partida actualizada',
+                               data=response)
 
 
 @games_router.delete('/{game_id}', summary='Eliminar partida')

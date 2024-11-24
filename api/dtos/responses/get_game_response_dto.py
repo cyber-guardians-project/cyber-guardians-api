@@ -9,6 +9,6 @@ class GetGameResponseDto(BaseModel):
     score: int
     character_variation: int
     current_level: int
-    levels: dict
+    levels: list
     created_at: datetime
     updated_at: Optional[datetime] = Field(default=None)

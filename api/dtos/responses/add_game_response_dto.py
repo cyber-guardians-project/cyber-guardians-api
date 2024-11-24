@@ -9,5 +9,5 @@ class AddGameResponseDto(BaseModel):
     score: int
     character_variation: int
     current_level: int
-    levels: Optional[dict]
+    levels: Optional[list]
     created_at: datetime

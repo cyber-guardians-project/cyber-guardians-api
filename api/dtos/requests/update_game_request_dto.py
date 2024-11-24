@@ -6,4 +6,4 @@ class UpdateGameRequestDto(BaseModel):
     score: Optional[int] = Field(default=None)
     character_variation: Optional[int] = Field(default=None)
     current_level: Optional[int] = Field(default=None)
-    levels: Optional[dict] = Field(default=None)
+    levels: Optional[list] = Field(default=None)
